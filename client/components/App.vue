@@ -14,6 +14,7 @@
 		<ConfirmDialog ref="confirmDialog" />
 		<div id="upload-overlay"></div>
 	</div>
+	<VueAnnouncer class="sr-only" />
 </template>
 
 <script lang="ts">
@@ -39,8 +40,10 @@ import {
 	Ref,
 	InjectionKey,
 } from "vue";
+import {useAnnouncer} from "../js/announcer";
 import {useStore} from "../js/store";
 import type {DebouncedFunc} from "lodash";
+import VueAnnouncer from "@vue-a11y/announcer";
 
 export const imageViewerKey = Symbol() as InjectionKey<Ref<typeof ImageViewer | null>>;
 const contextMenuKey = Symbol() as InjectionKey<Ref<typeof ContextMenu | null>>;
@@ -56,6 +59,7 @@ export default defineComponent({
 		Mentions,
 	},
 	setup() {
+		const {activate, deactivate, polite} = useAnnouncer();
 		const store = useStore();
 		const overlay = ref(null);
 		const loungeWindow = ref(null);
@@ -66,6 +70,9 @@ export default defineComponent({
 		provide(imageViewerKey, imageViewer);
 		provide(contextMenuKey, contextMenu);
 		provide(confirmDialogKey, confirmDialog);
+
+		// Avoid announcing initial state changes during setup (resumed upon mount)
+		deactivate();
 
 		const viewportClasses = computed(() => {
 			return {
@@ -93,6 +100,13 @@ export default defineComponent({
 			return false;
 		};
 
+		store.watch(
+			({sidebarOpen}) => sidebarOpen,
+			(sidebarOpen) => {
+				polite(`Navigation sidebar ${sidebarOpen ? "opened" : "closed"}`);
+			}
+		);
+
 		const toggleUserList = (e: ExtendedKeyboardEvent) => {
 			if (isIgnoredKeybind(e)) {
 				return true;
@@ -102,6 +116,13 @@ export default defineComponent({
 
 			return false;
 		};
+
+		store.watch(
+			({userlistOpen}) => userlistOpen,
+			(userlistOpen) => {
+				polite(`Userlist ${userlistOpen ? "opened" : "closed"}`);
+			}
+		);
 
 		const toggleMentions = () => {
 			if (store.state.networks.length !== 0) {
@@ -160,6 +181,8 @@ export default defineComponent({
 			};
 
 			dayChangeTimeout.value = setTimeout(emitDayChange, msUntilNextDay());
+
+			activate();
 		});
 
 		onBeforeUnmount(() => {
