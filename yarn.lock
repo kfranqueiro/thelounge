@@ -1908,6 +1908,11 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
+"@vue-a11y/announcer@^3.1.5":
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/@vue-a11y/announcer/-/announcer-3.1.5.tgz#aab9e8bb7faddac69f6e8e68ab3017fb2621fd46"
+  integrity sha512-eBL5b2cAjvXNGPvakrpNIj1navG1nA3jFF7z5DXrQLLYyWFjtcjdO2w8AHn7WEafU68jRNYEubP7Mv0h0WhgUQ==
+
 "@vue/compiler-core@3.2.35":
   version "3.2.35"
   resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.2.35.tgz#f2fc01bd25d859a77b0d9ef5df28f657c1979070"
