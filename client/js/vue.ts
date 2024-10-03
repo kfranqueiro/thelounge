@@ -2,6 +2,7 @@ import constants from "./constants";
 
 import "../css/style.css";
 import {createApp} from "vue";
+import VueAnnouncer, {useAnnouncer} from "@vue-a11y/announcer";
 import {store, CallableGetters, key} from "./store";
 import App from "../components/App.vue";
 import storage from "./localStorage";
@@ -20,6 +21,7 @@ const faviconAlerted = favicon?.dataset.other || "";
 
 export const VueApp = createApp(App);
 
+VueApp.use(VueAnnouncer);
 VueApp.use(router);
 VueApp.use(store, key);
 

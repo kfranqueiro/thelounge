@@ -119,6 +119,7 @@
     "@types/ws": "8.5.12",
     "@typescript-eslint/eslint-plugin": "7.8.0",
     "@typescript-eslint/parser": "7.8.0",
+    "@vue-a11y/announcer": "^3.1.5",
     "@vue/runtime-dom": "3.2.33",
     "@vue/test-utils": "2.4.6",
     "babel-loader": "8.2.5",
