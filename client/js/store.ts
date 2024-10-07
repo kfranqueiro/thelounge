@@ -56,6 +56,7 @@ export type State = {
 	sessions: ClientSession[];
 	sidebarOpen: boolean;
 	sidebarDragging: boolean;
+	titlePrefix?: string;
 	userlistOpen: boolean;
 	versionData:
 		| null
@@ -98,6 +99,7 @@ const state = (): State => ({
 	sessions: [],
 	sidebarOpen: false,
 	sidebarDragging: false,
+	titlePrefix: undefined,
 	userlistOpen: storage.get("thelounge.state.userlist") !== "false",
 	versionData: null,
 	versionStatus: "loading",
@@ -190,9 +192,9 @@ const getters: Getters = {
 		const alertEventCount = getters.highlightCount
 			? `(${getters.highlightCount.toString()}) `
 			: "";
-		const channelname = state.activeChannel ? `${state.activeChannel.channel.name} — ` : "";
+		const prefix = state.activeChannel ? state.activeChannel.channel.name : state.titlePrefix;
 
-		return alertEventCount + channelname + appName;
+		return `${alertEventCount}${prefix ? `${prefix} - ` : ""}${appName}`;
 	},
 };
 
@@ -220,6 +222,7 @@ type Mutations = {
 	sessions(state: State, payload: State["sessions"]): void;
 	sidebarOpen(state: State, payload: State["sidebarOpen"]): void;
 	sidebarDragging(state: State, payload: State["sidebarDragging"]): void;
+	titlePrefix(state: State, prefix: string): void;
 	toggleSidebar(state: State): void;
 	toggleUserlist(state: State): void;
 	userlistOpen(state: State, payload: State["userlistOpen"]): void;
@@ -283,6 +286,9 @@ const mutations: Mutations = {
 	},
 	sidebarDragging(state, payload) {
 		state.sidebarDragging = payload;
+	},
+	titlePrefix(state, prefix) {
+		state.titlePrefix = prefix;
 	},
 	toggleSidebar(state) {
 		state.sidebarOpen = !state.sidebarOpen;
