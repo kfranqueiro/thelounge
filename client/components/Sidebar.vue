@@ -32,33 +32,11 @@
 			<span
 				class="tooltipped tooltipped-n tooltipped-no-touch"
 				aria-label="Connect to network"
-				><router-link
-					v-slot:default="{navigate, isActive}"
-					to="/connect"
-					role="tab"
-					aria-controls="connect"
-				>
-					<button
-						:class="['icon', 'connect', {active: isActive}]"
-						:aria-selected="isActive"
-						@click="navigate"
-						@keypress.enter="navigate"
-					/> </router-link
-			></span>
+				><router-link to="/connect" :class="['icon', 'connect']" active-class="active"
+			/></span>
 			<span class="tooltipped tooltipped-n tooltipped-no-touch" aria-label="Settings"
-				><router-link
-					v-slot:default="{navigate, isActive}"
-					to="/settings"
-					role="tab"
-					aria-controls="settings"
-				>
-					<button
-						:class="['icon', 'settings', {active: isActive}]"
-						:aria-selected="isActive"
-						@click="navigate"
-						@keypress.enter="navigate"
-					></button> </router-link
-			></span>
+				><router-link to="/settings" :class="['icon', 'settings']" active-class="active"
+			/></span>
 			<span
 				class="tooltipped tooltipped-n tooltipped-no-touch"
 				:aria-label="
@@ -67,23 +45,14 @@
 						: 'Help'
 				"
 				><router-link
-					v-slot:default="{navigate, isActive}"
 					to="/help"
-					role="tab"
-					aria-controls="help"
-				>
-					<button
-						:aria-selected="route.name === 'Help'"
-						:class="[
-							'icon',
-							'help',
-							{notified: store.state.serverConfiguration?.isUpdateAvailable},
-							{active: isActive},
-						]"
-						@click="navigate"
-						@keypress.enter="navigate"
-					></button> </router-link
-			></span>
+					:class="[
+						'icon',
+						'help',
+						{notified: store.state.serverConfiguration?.isUpdateAvailable},
+					]"
+					active-class="active"
+			/></span>
 		</footer>
 	</aside>
 </template>

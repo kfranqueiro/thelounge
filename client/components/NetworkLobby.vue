@@ -5,13 +5,13 @@
 			:aria-controls="'network-' + network.uuid"
 			:aria-label="getExpandLabel(network)"
 			:aria-expanded="!network.isCollapsed"
-			class="collapse-network"
+			class="collapse-network tooltipped tooltipped-e"
 			@click.stop="onCollapseClick"
 		>
 			<span class="collapse-network-icon" />
 		</button>
 		<span v-else class="collapse-network" />
-		<div class="lobby-wrap">
+		<router-link class="lobby-wrap" :to="`/chan-${channel.id}`">
 			<span :title="channel.name" class="name">{{ channel.name }}</span>
 			<span
 				v-if="network.status.connected && !network.status.secure"
@@ -30,18 +30,16 @@
 			<span v-if="channel.unread" :class="{highlight: channel.highlight}" class="badge">{{
 				unreadCount
 			}}</span>
-		</div>
-		<span
-			:aria-label="joinChannelLabel"
+		</router-link>
+		<button
 			class="add-channel-tooltip tooltipped tooltipped-w tooltipped-no-touch"
+			:aria-controls="'join-channel-' + channel.id"
+			:aria-expanded="isJoinChannelShown"
+			:aria-label="joinChannelLabel"
+			@click.stop="$emit('toggle-join-channel')"
 		>
-			<button
-				:class="['add-channel', {opened: isJoinChannelShown}]"
-				:aria-controls="'join-channel-' + channel.id"
-				:aria-label="joinChannelLabel"
-				@click.stop="$emit('toggle-join-channel')"
-			/>
-		</span>
+			<div :class="['add-channel', {opened: isJoinChannelShown}]" />
+		</button>
 	</ChannelWrapper>
 </template>
 
@@ -86,7 +84,7 @@ export default defineComponent({
 		};
 
 		const getExpandLabel = (network: ClientNetwork) => {
-			return network.isCollapsed ? "Expand" : "Collapse";
+			return `${network.isCollapsed ? "Expand" : "Collapse"} chats in network`;
 		};
 
 		return {

@@ -7,12 +7,7 @@
 				'time-12h': store.state.settings.use12hClock,
 			}"
 		>
-			<div
-				class="chat-view"
-				data-type="search-results"
-				aria-label="Search results"
-				role="tabpanel"
-			>
+			<div class="chat-view" data-type="search-results">
 				<div v-if="network && channel" class="header">
 					<SidebarToggle />
 					<span class="title"

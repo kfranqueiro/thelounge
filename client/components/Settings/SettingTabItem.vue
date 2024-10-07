@@ -1,13 +1,7 @@
 <template>
-	<li :aria-label="name" role="tab" :aria-selected="route.name === name" aria-controls="settings">
-		<router-link v-slot:default="{navigate, isExactActive}" :to="'/settings/' + to" custom>
-			<button
-				:class="['icon', className, {active: isExactActive}]"
-				@click="navigate"
-				@keypress.enter="navigate"
-			>
-				{{ name }}
-			</button>
+	<li :aria-label="name" aria-controls="settings">
+		<router-link :to="'/settings/' + to" :class="['icon', className]">
+			{{ name }}
 		</router-link>
 	</li>
 </template>

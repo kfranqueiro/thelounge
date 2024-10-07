@@ -1,6 +1,6 @@
 import constants from "./constants";
 
-import {createRouter, createWebHashHistory} from "vue-router";
+import {type RouteLocationNormalized, createRouter, createWebHashHistory} from "vue-router";
 import SignIn from "../components/Windows/SignIn.vue";
 import Connect from "../components/Windows/Connect.vue";
 import Settings from "../components/Windows/Settings.vue";
@@ -9,7 +9,7 @@ import Changelog from "../components/Windows/Changelog.vue";
 import NetworkEdit from "../components/Windows/NetworkEdit.vue";
 import SearchResults from "../components/Windows/SearchResults.vue";
 import RoutedChat from "../components/RoutedChat.vue";
-import {store} from "./store";
+import {State, store} from "./store";
 
 import AppearanceSettings from "../components/Settings/Appearance.vue";
 import GeneralSettings from "../components/Settings/General.vue";
@@ -129,6 +129,13 @@ router.beforeEach((to, from) => {
 	return true;
 });
 
+function resolveTitlePrefix(location: RouteLocationNormalized, state: State) {
+	// Note: activeChannel is processed in store's title getter
+	if (!location.path.startsWith("/chan-") && typeof location.name === "string") {
+		return location.name.replace(/([a-z])([A-Z])/g, "$1 $2");
+	}
+}
+
 router.afterEach((to) => {
 	if (store.state.appLoaded) {
 		if (window.innerWidth <= constants.mobileViewportPixels) {
@@ -153,6 +160,8 @@ router.afterEach((to) => {
 			channel.moreHistoryAvailable = true;
 		}
 	}
+
+	store.commit("titlePrefix", resolveTitlePrefix(to, store.state));
 });
 
 async function navigate(routeName: string, params: any = {}) {
