@@ -232,8 +232,15 @@ document.addEventListener("keydown", (e) => {
 
 	const tagName = (e.target as HTMLElement).tagName;
 
-	// Ignore if we're already typing into <input> or <textarea>
-	if (tagName === "INPUT" || tagName === "TEXTAREA") {
+	// Ignore if we're already typing into <input> or <textarea>,
+	// or interacting with a link, button, or menu
+	if (
+		tagName === "INPUT" ||
+		tagName === "TEXTAREA" ||
+		(tagName === "A" && e.which === 13) ||
+		(tagName === "BUTTON" && (e.which === 13 || e.which === 32)) ||
+		e.which === 93 // Context menu
+	) {
 		return;
 	}
 

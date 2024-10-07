@@ -1,5 +1,5 @@
 <template>
-	<div id="viewport" :class="viewportClasses" role="tablist">
+	<div id="viewport" :class="viewportClasses">
 		<Sidebar v-if="store.state.appLoaded" :overlay="overlay" />
 		<div
 			id="sidebar-overlay"
