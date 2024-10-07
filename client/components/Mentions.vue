@@ -37,10 +37,7 @@
 							</span>
 						</div>
 						<div>
-							<span
-								class="close-tooltip tooltipped tooltipped-w"
-								aria-label="Dismiss this mention"
-							>
+							<span class="tooltipped tooltipped-w" aria-label="Dismiss this mention">
 								<button
 									class="msg-dismiss"
 									aria-label="Dismiss this mention"

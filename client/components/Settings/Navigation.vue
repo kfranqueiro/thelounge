@@ -40,19 +40,20 @@
 	list-style: none;
 }
 
-.settings-menu button {
+.settings-menu a {
 	color: var(--body-color-muted);
 	width: 100%;
 	height: 100%;
 	display: inline-block;
 	text-align: left;
+	text-decoration: none;
 }
 
-.settings-menu li:not(:last-of-type) button {
+.settings-menu li:not(:last-of-type) a {
 	margin-bottom: 8px;
 }
 
-.settings-menu button::before {
+.settings-menu a::before {
 	width: 18px;
 	height: 18px;
 	display: inline-block;
@@ -80,12 +81,12 @@
 	content: "\f013"; /* http://fontawesome.io/icon/cog/ */
 }
 
-.settings-menu button:hover,
-.settings-menu button.active {
+.settings-menu a:hover,
+.settings-menu a[aria-current="page"] {
 	color: var(--body-color);
 }
 
-.settings-menu button.active {
+.settings-menu a[aria-current="page"] {
 	cursor: default;
 }
 </style>

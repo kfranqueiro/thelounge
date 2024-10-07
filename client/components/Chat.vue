@@ -9,13 +9,7 @@
 				'colored-nicks': true, // TODO temporarily fixes themes, to be removed in next major version
 			}"
 		>
-			<div
-				:id="'chan-' + channel.id"
-				class="chat-view"
-				:data-type="channel.type"
-				:aria-label="channel.name"
-				role="tabpanel"
-			>
+			<div :id="'chan-' + channel.id" class="chat-view" :data-type="channel.type">
 				<div class="header">
 					<SidebarToggle />
 					<span class="title" :aria-label="'Currently open ' + channel.type">{{

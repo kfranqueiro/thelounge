@@ -21,10 +21,7 @@
 		:title="getAriaLabel()"
 		:data-name="channel.name"
 		:data-type="channel.type"
-		:aria-controls="'#chan-' + channel.id"
-		:aria-selected="active"
 		:style="channel.closed ? {transition: 'none', opacity: 0.4} : undefined"
-		role="tab"
 		@click="click"
 		@contextmenu.prevent="openContextMenu"
 	>
@@ -38,7 +35,6 @@ import isChannelCollapsed from "../js/helpers/isChannelCollapsed";
 import {ClientNetwork, ClientChan} from "../js/types";
 import {computed, defineComponent, PropType} from "vue";
 import {useStore} from "../js/store";
-import {switchToChannel} from "../js/router";
 
 export default defineComponent({
 	name: "ChannelWrapper",
@@ -84,12 +80,11 @@ export default defineComponent({
 			return `${type}: ${props.channel.name} ${extra.length ? `(${extra.join(", ")})` : ""}`;
 		};
 
-		const click = () => {
+		const click = (event: MouseEvent) => {
 			if (props.isFiltering) {
-				return;
+				// Navigate via search result processing rather than router-link
+				event.preventDefault();
 			}
-
-			switchToChannel(props.channel);
 		};
 
 		const openContextMenu = (event: MouseEvent) => {
