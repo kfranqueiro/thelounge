@@ -122,8 +122,10 @@ a:hover {
 	text-decoration: underline;
 }
 
-a:focus {
-	outline: thin dotted;
+a:focus,
+button:focus {
+	outline: medium auto currentColor;
+	outline: medium auto invert;
 	outline: 5px auto -webkit-focus-ring-color;
 	outline-offset: -2px;
 }
@@ -140,7 +142,6 @@ button {
 	border: none;
 	background: none;
 	margin: 0;
-	outline: none;
 	padding: 0;
 	user-select: inherit;
 	cursor: pointer;
@@ -292,7 +293,7 @@ p {
 #chat button.close::before,
 #chat button.menu::before,
 #chat button.search::before,
-.channel-list-item::before,
+.channel-list-item a::before,
 #footer .icon,
 #chat .count::before,
 #connect .extra-help,
@@ -384,16 +385,16 @@ p {
 
 .context-menu-query::before,
 .context-menu-action-query::before,
-.channel-list-item[data-type="query"]::before {
+.channel-list-item[data-type="query"] a::before {
 	content: "\f075"; /* https://fontawesome.com/icons/comment?style=solid */
 }
 
 .context-menu-chan::before,
-.channel-list-item[data-type="channel"]::before { content: "\f086"; /* http://fontawesome.io/icon/comments/ */ }
+.channel-list-item[data-type="channel"] a::before { content: "\f086"; /* http://fontawesome.io/icon/comments/ */ }
 
-.channel-list-item[data-type="special"]::before { content: "\f03a"; /* http://fontawesome.io/icon/list/ */ }
+.channel-list-item[data-type="special"] a::before { content: "\f03a"; /* http://fontawesome.io/icon/list/ */ }
 
-.channel-list-item.has-draft:not(.active):not([data-type="lobby"])::before {
+.channel-list-item.has-draft:not(.active):not([data-type="lobby"]) a::before {
 	content: "\f304"; /* https://fontawesome.com/icons/pen?style=solid */
 }
 
@@ -710,14 +711,20 @@ p {
 
 .channel-list-item {
 	display: flex;
-	padding: 8px 14px;
+	padding: 0 14px;
 	position: relative;
 	cursor: pointer;
 }
 
+.channel-list-item a {
+	padding: 8px 0;
+	color: inherit;
+	text-decoration: none;
+}
+
 /* Channels/queries must be white on hover and active */
-#footer button:hover,
-#footer button.active,
+#footer a:hover,
+#footer a.active,
 .channel-list-item:hover,
 .channel-list-item.active {
 	color: #fff;
@@ -726,12 +733,12 @@ p {
 /* All lobbies/channels/queries and footer buttons must have a half-transparent
 background on hover (unless active) */
 .channel-list-item:hover,
-#footer button:hover {
+#footer a:hover {
 	background-color: rgb(48 62 74 / 50%); /* #303e4a x 50% alpha */
 }
 
 /* Darker background and default cursor for active channels */
-#footer button.active,
+#footer a.active,
 .channel-list-item.active {
 	background-color: #303e4a;
 	cursor: default;
@@ -830,7 +837,8 @@ background on hover (unless active) */
 	opacity: 0.5;
 }
 
-.channel-list-item::before {
+.channel-list-item a::before {
+	display: inline-block;
 	width: 14px;
 	margin-right: 12px;
 	line-height: 18px;
@@ -847,6 +855,7 @@ background on hover (unless active) */
 .header .topic,
 .channel-list-item .name {
 	mask-image: linear-gradient(to left, transparent, black 20px);
+	outline-offset: -3px; /* Avoid cutting off focus outline top/bottom due to mask */
 }
 
 .channel-list-item .badge,
@@ -861,6 +870,7 @@ background on hover (unless active) */
 	border-radius: 3px;
 	color: #afb6c0;
 	font-size: 10px;
+	margin: 8px 0; /* Matches .channel-list-item a padding */
 	padding: 4px 6px;
 	transition: background-color 0.2s, color 0.2s;
 }
@@ -877,7 +887,10 @@ background on hover (unless active) */
 .channel-list-item .close {
 	width: 18px;
 	height: 18px;
-	display: none;
+}
+
+.channel-list-item .close-tooltip {
+	display: none; /* Overridden for active item */
 	transition: opacity 0.2s, background-color 0.2s;
 }
 
@@ -891,12 +904,13 @@ background on hover (unless active) */
 	color: #fff;
 }
 
-.channel-list-item.active .close {
-	opacity: 0.4;
+.channel-list-item.active .close-tooltip {
 	display: unset;
+	opacity: 0.4;
 }
 
-.channel-list-item.active .close:hover {
+.channel-list-item.active .close-tooltip:hover,
+.channel-list-item.active .close-tooltip:focus {
 	opacity: 1;
 }
 
@@ -904,6 +918,9 @@ background on hover (unless active) */
 	border-radius: 3px;
 	width: 18px;
 	height: 18px;
+}
+
+.channel-list-item[data-type="lobby"] .add-channel-tooltip {
 	opacity: 0.4;
 	transition: opacity 0.2s, background-color 0.2s, transform 0.2s;
 }
@@ -918,7 +935,8 @@ background on hover (unless active) */
 	color: #fff;
 }
 
-.channel-list-item[data-type="lobby"] .add-channel:hover {
+.channel-list-item[data-type="lobby"] .add-channel-tooltip:hover,
+.channel-list-item[data-type="lobby"] .add-channel-tooltip:focus {
 	opacity: 1;
 }
 
@@ -951,7 +969,8 @@ background on hover (unless active) */
 	color: #fff;
 }
 
-#sidebar .collapse-network:hover {
+#sidebar .collapse-network:hover,
+#sidebar .collapse-network:focus {
 	opacity: 1;
 }
 
@@ -963,12 +982,15 @@ background on hover (unless active) */
 	justify-content: center;
 }
 
-#footer button {
+#footer a {
 	color: #b7c5d1;
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	width: 45px;
 	height: 100%;
 	border-radius: 5px;
+	text-decoration: none;
 }
 
 #footer .help.notified::after {
