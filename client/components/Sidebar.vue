@@ -29,30 +29,36 @@
 			<NetworkList />
 		</div>
 		<footer id="footer">
-			<span
-				class="tooltipped tooltipped-n tooltipped-no-touch"
+			<router-link
+				to="/connect"
 				aria-label="Connect to network"
-				><router-link to="/connect" :class="['icon', 'connect']" active-class="active"
-			/></span>
-			<span class="tooltipped tooltipped-n tooltipped-no-touch" aria-label="Settings"
-				><router-link to="/settings" :class="['icon', 'settings']" active-class="active"
-			/></span>
-			<span
 				class="tooltipped tooltipped-n tooltipped-no-touch"
+				active-class="active"
+				><span class="icon connect"
+			/></router-link>
+			<router-link
+				to="/settings"
+				aria-label="Settings"
+				class="tooltipped tooltipped-n tooltipped-no-touch"
+				active-class="active"
+				><span class="icon settings"
+			/></router-link>
+			<router-link
+				to="/help"
 				:aria-label="
 					store.state.serverConfiguration?.isUpdateAvailable
 						? 'Help\n(update available)'
 						: 'Help'
 				"
-				><router-link
-					to="/help"
+				class="tooltipped tooltipped-n tooltipped-no-touch"
+				active-class="active"
+				><span
 					:class="[
 						'icon',
 						'help',
 						{notified: store.state.serverConfiguration?.isUpdateAvailable},
 					]"
-					active-class="active"
-			/></span>
+			/></router-link>
 		</footer>
 	</aside>
 </template>
