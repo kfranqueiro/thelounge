@@ -57,17 +57,14 @@
 						aria-label="Open the context menu"
 						@click="openContextMenu"
 					/>
-					<span
+					<button
 						v-if="channel.type === 'channel'"
-						class="rt-tooltip tooltipped tooltipped-w"
+						class="tooltipped tooltipped-w"
 						aria-label="Toggle user list"
+						@click="store.commit('toggleUserlist')"
 					>
-						<button
-							class="rt"
-							aria-label="Toggle user list"
-							@click="store.commit('toggleUserlist')"
-						/>
-					</span>
+						<span class="rt" />
+					</button>
 				</div>
 				<div v-if="channel.type === 'special'" class="chat-content">
 					<div class="chat">
@@ -83,7 +80,7 @@
 					</div>
 				</div>
 				<div v-else class="chat-content">
-					<div
+					<button
 						:class="[
 							'scroll-down tooltipped tooltipped-w tooltipped-no-touch',
 							{'scroll-down-shown': !channel.scrolledToBottom},
@@ -92,7 +89,7 @@
 						@click="messageList?.jumpToBottom()"
 					>
 						<div class="scroll-down-arrow" />
-					</div>
+					</button>
 					<ChatUserList v-if="channel.type === 'channel'" :channel="channel" />
 					<MessageList
 						ref="messageList"
