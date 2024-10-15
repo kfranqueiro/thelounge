@@ -231,7 +231,7 @@ p {
 	margin-bottom: 10px;
 	padding: 9px 17px;
 	text-transform: uppercase;
-	transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
+	transition: background 0.2s, color 0.2s;
 	word-spacing: 3px;
 	cursor: pointer; /* This is useful for `<button>` elements */
 }
@@ -249,10 +249,12 @@ p {
 }
 
 .input:focus,
-.btn:active,
 .btn:focus {
-	outline: 0;
-	box-shadow: 0 0 0 3px rgb(132 206 136 / 50%);
+	outline: 2px solid var(--button-color);
+}
+
+.btn:focus {
+	outline-offset: 2px;
 }
 
 .btn:active {
@@ -1022,7 +1024,7 @@ background on hover (unless active) */
 	margin: 2px 0;
 	margin-bottom: 10px;
 	padding: 0 10px;
-	transition: border-color 0.2s, box-shadow 0.2s;
+	transition: border-color 0.2s;
 	width: 100%;
 	height: 35px;
 	line-height: 35px;
@@ -1971,9 +1973,8 @@ part/quit messages where we don't load previews (adds a blank line otherwise) */
 	color: #fff;
 }
 
-#settings .settings-sync-panel .btn:active,
 #settings .settings-sync-panel .btn:focus {
-	box-shadow: 0 0 0 3px rgb(0 123 255 / 50%);
+	outline: 2px solid #007bff;
 }
 
 #settings .opt {
