@@ -3,13 +3,19 @@
 :root {
 	--body-color: #f3f3f3;
 	--body-color-muted: #b7c5d1;
-	--link-color: #77abd9;
 	--window-bg-color: #303e4a;
-	--window-heading-color: #b7c5d1;
+	--button-color: #84ce88;
+	--link-color: #77abd9;
+	--window-heading-color: var(--body-color-muted);
 	--date-marker-color: #97ea70;
-	--unread-marker-color: #f92772;
+	--unread-marker-color: #fc7daa;
 	--highlight-bg-color: #4d4332;
 	--highlight-border-color: #b08c4f;
+	--action-color: #f39c12;
+	--leave-from-color: #ff817a;
+	--misc-from-color: #2ecc40;
+	--notice-color: #4dacff;
+	--error-color: #ef8b80;
 }
 
 body {
@@ -161,23 +167,19 @@ kbd {
 }
 
 /* Form elements */
-/* stylelint-disable selector-no-vendor-prefix */
 
-#chat-container ::-moz-placeholder {
+.input {
+	/* Separate outline from box to always measure 3:1 contrast against window-bg-color */
+	outline-offset: 2px;
+}
+
+#chat-container ::placeholder {
 	color: #b7c5d1;
 	opacity: 0.75;
 }
 
-#chat-container ::-webkit-input-placeholder {
-	color: #b7c5d1;
-	opacity: 0.75;
+#settings #change-password .success {
+	color: #2ecc40;
 }
-
-#chat-container :-ms-input-placeholder {
-	color: #b7c5d1;
-	opacity: 0.75;
-}
-
-/* stylelint-enable selector-no-vendor-prefix */
 
 /* End form elements */
