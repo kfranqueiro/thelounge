@@ -12,34 +12,57 @@
 	/* Background color of the whole page */
 	--body-bg-color: #415364;
 
+	/* Background color of the main window */
+	--window-bg-color: #fff;
+
 	/* Main button color. Applies to border, text, and background on hover */
-	--button-color: #84ce88;
-	--button-text-color-hover: #fff;
+	--button-color: #3b8444;
+	--button-text-color-hover: var(--window-bg-color);
 
 	/* Color for sidebar overlay and other things that dim the viewport when something else is on top */
 	--overlay-bg-color: rgb(0 0 0 / 50%);
 
 	/* Links and link-looking buttons */
-	--link-color: #50a656;
-
-	/* Background color of the main window */
-	--window-bg-color: #fff;
+	--link-color: #2d8639;
 
 	/* Text color for <h2> and <h3> headings in windows */
 	--window-heading-color: #6c797a;
 
 	/* Color of the date marker, text and separator */
-	--date-marker-color: rgb(0 107 59 / 50%);
+	--date-marker-color: rgb(0 107 59 / 85%);
 
 	/* Color of the unread message marker, text and separator */
-	--unread-marker-color: rgb(231 76 60 / 50%);
+	--unread-marker-color: #d83e31;
 
 	/* Background and left-border color of highlight messages */
 	--highlight-bg-color: #efe8dc;
 	--highlight-border-color: #b08c4f;
 
+	/* Colors for specific message types */
+	--action-color: #b06300;
+	--leave-from-color: #e52224;
+	--misc-from-color: #1e852a;
+	--notice-color: #0074d9;
+
+	/* Color for various errors, both in chat and elsewhere in UI */
+	--error-color: #d73d31;
+
+	/* Colors for e.g. version checker and sync warning, intended to be used together */
+	--info-bg-color: #d9edf7;
+	--info-color: #31708f;
+
 	/* Color of the progress bar that appears as a file is being uploaded to the server. Defaults to button color */
 	--upload-progressbar-color: var(--button-color);
+
+	/* Color of text/icons in network/channel sidebar */
+	--sidebar-color: #b7c5d1;
+
+	/* Colors for single and multiline text fields/areas */
+	--input-bg-color: white;
+	--input-border-color: #8f959c;
+	--input-color: #222;
+	--input-disabled-bg-color: #ddd;
+	--input-focused-border-color: var(--button-color);
 }
 
 ::placeholder {
@@ -115,11 +138,6 @@ a,
 a:hover,
 a:focus {
 	color: var(--link-color);
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: underline;
 }
 
 a:focus,
@@ -159,7 +177,7 @@ code,
 .irc-monospace {
 	font-size: 13px;
 	padding: 2px 4px;
-	color: #e74c3c;
+	color: #d73d31;
 	background-color: #f9f2f4;
 	border-radius: 2px;
 }
@@ -209,7 +227,7 @@ p {
 	margin-bottom: 10px;
 	padding: 9px 17px;
 	text-transform: uppercase;
-	transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
+	transition: background 0.2s, color 0.2s;
 	word-spacing: 3px;
 	cursor: pointer; /* This is useful for `<button>` elements */
 }
@@ -227,10 +245,12 @@ p {
 }
 
 .input:focus,
-.btn:active,
 .btn:focus {
-	outline: 0;
-	box-shadow: 0 0 0 3px rgb(132 206 136 / 50%);
+	outline: 2px solid var(--button-color);
+}
+
+.btn:focus {
+	outline-offset: 2px;
 }
 
 .btn:active {
@@ -410,7 +430,7 @@ p {
 #chat .msg[data-type="away"] .from::before,
 #chat .msg[data-type="back"] .from::before {
 	content: "\f017"; /* https://fontawesome.com/icons/clock?style=solid */
-	color: #7f8c8d;
+	color: var(--body-color-muted);
 }
 
 #help .website-link::before,
@@ -430,37 +450,37 @@ p {
 
 #chat .msg[data-type="invite"] .from::before {
 	content: "\f0e0"; /* https://fontawesome.com/icons/envelope?style=solid */
-	color: #2ecc40;
+	color: var(--misc-from-color);
 }
 
 #chat .msg[data-type="login"] .from::before {
 	content: "\f007"; /* https://fontawesome.com/icons/user?style=solid */
-	color: #2ecc40;
+	color: var(--misc-from-color);
 }
 
 #chat .msg[data-type="logout"] .from::before {
 	content: "\f007"; /* https://fontawesome.com/icons/user?style=solid */
-	color: #ff4136;
+	color: var(--leave-from-color);
 }
 
 #chat .msg[data-type="part"] .from::before,
 #chat .msg[data-type="quit"] .from::before {
 	content: "\f2f5"; /* https://fontawesome.com/icons/sign-out-alt?style=solid */
-	color: #ff4136;
+	color: var(--leave-from-color);
 	display: inline-block;
 	transform: rotate(180deg);
 }
 
 #chat .msg[data-type="topic"] .from::before {
 	content: "\f0a1"; /* http://fontawesome.io/icon/bullhorn/ */
-	color: #2ecc40;
+	color: var(--misc-from-color);
 }
 
 #chat .msg[data-type="mode_channel"] .from::before,
 #chat .msg[data-type="mode_user"] .from::before,
 #chat .msg[data-type="mode"] .from::before {
 	content: "\f05a"; /* http://fontawesome.io/icon/info-circle/ */
-	color: #2ecc40;
+	color: var(--misc-from-color);
 }
 
 #chat .msg[data-command="motd"] .from::before {
@@ -486,22 +506,22 @@ p {
 
 #chat .msg[data-type="whois"] .from::before {
 	content: "\f007"; /* http://fontawesome.io/icon/user/ */
-	color: #2ecc40;
+	color: var(--misc-from-color);
 }
 
 #chat .msg[data-type="nick"] .from::before {
 	content: "\f007"; /* http://fontawesome.io/icon/user/ */
-	color: #2ecc40;
+	color: var(--misc-from-color);
 }
 
 #chat .msg[data-type="join"] .from::before {
 	content: "\f2f6"; /* https://fontawesome.com/icons/sign-in-alt?style=solid */
-	color: #2ecc40;
+	color: var(--misc-from-color);
 }
 
 #chat .msg[data-type="kick"] .from::before {
 	content: "\f05e"; /* http://fontawesome.io/icon/ban/ */
-	color: #ff4136;
+	color: var(--leave-from-color);
 }
 
 #chat .msg[data-type="raw"] .from::before {
@@ -510,7 +530,7 @@ p {
 
 #chat .msg.self[data-type="raw"] .from::before {
 	content: "\f359"; /* https://fontawesome.com/icons/arrow-alt-circle-left?style=solid */
-	color: #2ecc40;
+	color: var(--misc-from-color);
 }
 
 #chat .msg[data-type="action"] .from::before {
@@ -651,7 +671,7 @@ p {
 	position: absolute;
 	top: 9px;
 	right: 7px;
-	background-color: #e74c3c;
+	background-color: var(--error-color);
 	width: 10px;
 	height: 10px;
 	border-radius: 50%;
@@ -675,7 +695,7 @@ p {
 	width: 220px;
 	max-height: 100%;
 	will-change: transform;
-	color: #b7c5d1; /* same as .channel-list-item color */
+	color: var(--sidebar-color); /* same as .channel-list-item color */
 }
 
 #viewport.menu-open #sidebar {
@@ -813,7 +833,7 @@ background on hover (unless active) */
 }
 
 .channel-list-item.not-secure {
-	color: #f39c12;
+	color: var(--action-color);
 }
 
 .channel-list-item.not-secure:hover,
@@ -823,7 +843,7 @@ background on hover (unless active) */
 
 .channel-list-item.not-connected,
 .channel-list-item.parted-channel {
-	color: #e74c3c;
+	color: var(--error-color);
 }
 
 .channel-list-item.not-connected:hover,
@@ -983,7 +1003,7 @@ background on hover (unless active) */
 }
 
 #footer a {
-	color: #b7c5d1;
+	color: var(--sidebar-color);
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -1014,14 +1034,14 @@ background on hover (unless active) */
 }
 
 .input {
-	background-color: white;
-	border: 1px solid #cdd3da;
+	background-color: var(--input-bg-color);
+	border: 1px solid var(--input-border-color);
 	border-radius: 2px;
-	color: #222;
+	color: var(--input-color);
 	font-size: 14px;
 	margin: 2px 0;
 	padding: 0 10px;
-	transition: border-color 0.2s, box-shadow 0.2s;
+	transition: border-color 0.2s;
 	width: 100%;
 	height: 35px;
 	line-height: 35px;
@@ -1038,12 +1058,12 @@ background on hover (unless active) */
 }
 
 .input:disabled {
-	background-color: #ddd;
+	background-color: var(--input-disabled-bg-color);
 }
 
 .input:not(:disabled):hover,
 .input:not(:disabled):focus {
-	border-color: #84ce88;
+	border-color: var(--input-focused-border-color);
 }
 
 textarea.input {
@@ -1470,23 +1490,23 @@ textarea.input {
 /* Nicknames */
 
 .user {
-	color: #50a656;
+	color: #3f8342;
 }
 
 .user.color-1 { color: #107ead; }
 .user.color-2 { color: #a86500; }
-.user.color-3 { color: #008a3c; }
+.user.color-3 { color: #00873a; }
 .user.color-4 { color: #e00096; }
-.user.color-5 { color: #f0000c; }
+.user.color-5 { color: #ed0009; }
 .user.color-6 { color: #000094; }
 .user.color-7 { color: #006441; }
 .user.color-8 { color: #00566e; }
 .user.color-9 { color: #e6006b; }
-.user.color-10 { color: #0d8766; }
+.user.color-10 { color: #058464; }
 .user.color-11 { color: #006b3b; }
 .user.color-12 { color: #00857e; }
 .user.color-13 { color: #00465b; }
-.user.color-14 { color: #eb005a; }
+.user.color-14 { color: #e80058; }
 .user.color-15 { color: #e62600; }
 .user.color-16 { color: #0f8546; }
 .user.color-17 { color: #e60067; }
@@ -1504,7 +1524,7 @@ textarea.input {
 .user.color-29 { color: #e6007e; }
 .user.color-30 { color: #c75300; }
 .user.color-31 { color: #eb0400; }
-.user.color-32 { color: #e60082; }
+.user.color-32 { color: #e3007f; }
 
 #chat .self .content {
 	color: var(--body-color-muted);
@@ -1588,7 +1608,7 @@ textarea.input {
 #chat .msg[data-type="action"] .from,
 #chat .msg[data-type="action"] .content,
 #chat .msg[data-type="action"] .user {
-	color: #f39c12;
+	color: var(--action-color);
 }
 
 #chat .msg[data-type="notice"] .time,
@@ -1597,7 +1617,7 @@ textarea.input {
 #chat .msg[data-type="wallops"] .content,
 #chat .msg[data-type="notice"] .user,
 #chat .msg[data-type="wallops"] .user {
-	color: #0074d9;
+	color: var(--notice-color);
 }
 
 #chat .msg[data-type="notice"] .from .user::before {
@@ -1610,7 +1630,7 @@ textarea.input {
 
 #chat .msg[data-type="error"],
 #chat .msg[data-type="error"] .from {
-	color: #e74c3c;
+	color: var(--error-color);
 }
 
 #chat .chat-view[data-type="channel"] .msg.highlight {
@@ -1645,6 +1665,7 @@ textarea.input {
 #chat .toggle-content {
 	background: #f6f6f6;
 	border-radius: 5px;
+	color: #717171; /* Maintain 4.5:1 contrast against background */
 	max-width: 100%;
 	margin: 0;
 	margin-top: 6px;
@@ -1703,11 +1724,6 @@ textarea.input {
 	display: flex;
 	align-items: flex-start;
 	font-weight: bold;
-}
-
-#chat .toggle-type-error,
-#chat .toggle-text .body {
-	color: #717171;
 }
 
 #chat .toggle-text a {
@@ -1906,7 +1922,7 @@ part/quit messages where we don't load previews (adds a blank line otherwise) */
 }
 
 #sign-in .error {
-	color: #e74c3c;
+	color: var(--error-color);
 	margin-top: 1em;
 	width: 100%;
 }
@@ -1967,8 +1983,8 @@ part/quit messages where we don't load previews (adds a blank line otherwise) */
 	padding: 10px;
 	margin-bottom: 16px;
 	border-radius: 2px;
-	background-color: #d9edf7;
-	color: #31708f;
+	background-color: var(--info-bg-color);
+	color: var(--info-color);
 }
 
 #settings .settings-sync-panel p:last-child {
@@ -1987,9 +2003,8 @@ part/quit messages where we don't load previews (adds a blank line otherwise) */
 	color: #fff;
 }
 
-#settings .settings-sync-panel .btn:active,
 #settings .settings-sync-panel .btn:focus {
-	box-shadow: 0 0 0 3px rgb(0 123 255 / 50%);
+	outline: 2px solid #007bff;
 }
 
 #settings .opt {
@@ -2026,15 +2041,15 @@ part/quit messages where we don't load previews (adds a blank line otherwise) */
 }
 
 #settings #change-password .error {
-	color: #e74c3c;
+	color: var(--error-color);
 }
 
 #settings #change-password .success {
-	color: #2ecc40;
+	color: #1e852a;
 }
 
 #settings .error {
-	color: #e74c3c;
+	color: var(--error-color);
 	margin-top: 0.2em;
 }
 
@@ -2082,7 +2097,7 @@ part/quit messages where we don't load previews (adds a blank line otherwise) */
 
 .password-container .reveal-password-visible span::before {
 	content: "\f070"; /* https://fontawesome.com/icons/eye-slash?style=solid */
-	color: #ff4136;
+	color: #e52224;
 }
 
 #help .help-version-title {
@@ -2180,8 +2195,8 @@ part/quit messages where we don't load previews (adds a blank line otherwise) */
 }
 
 #version-checker.loading {
-	background-color: #d9edf7;
-	color: #31708f;
+	background-color: var(--info-bg-color);
+	color: var(--info-color);
 }
 
 #version-checker.loading::before {
@@ -2253,7 +2268,7 @@ part/quit messages where we don't load previews (adds a blank line otherwise) */
 	padding: 10px;
 	word-spacing: 3px;
 	text-transform: uppercase;
-	background: #e74c3c;
+	background: #d73d31;
 	color: #fff;
 	text-align: center;
 	cursor: pointer;
