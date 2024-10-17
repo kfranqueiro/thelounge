@@ -5,7 +5,13 @@
 		@click="containerClick"
 		@contextmenu="containerClick"
 	>
-		<div class="mentions-popup">
+		<div
+			id="mentions-popup"
+			ref="popup"
+			class="mentions-popup"
+			tabindex="-1"
+			@focusout="popupFocusOut"
+		>
 			<div class="mentions-popup-title">
 				Recent mentions
 				<button
@@ -49,6 +55,8 @@
 					</div>
 				</div>
 			</template>
+			<!-- Workaround for tabbing past end of document not firing focusout -->
+			<span class="sr-only" tabindex="0" @focus="closePopup" />
 		</div>
 	</div>
 </template>
@@ -147,7 +155,7 @@ import eventbus from "../js/eventbus";
 import localetime from "../js/helpers/localetime";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import {computed, watch, defineComponent, ref, onMounted, onUnmounted} from "vue";
+import {computed, watch, defineComponent, ref, onMounted, onUnmounted, nextTick} from "vue";
 import {useStore} from "../js/store";
 import {ClientMention} from "../js/types";
 
@@ -163,6 +171,9 @@ export default defineComponent({
 		const store = useStore();
 		const isOpen = ref(false);
 		const isLoading = ref(false);
+		const popup = ref<HTMLElement | null>(null);
+		let previousFocus: HTMLElement | null = null;
+
 		const resolvedMessages = computed(() => {
 			const messages = store.state.mentions.slice().reverse();
 
@@ -199,23 +210,41 @@ export default defineComponent({
 			socket.emit("mentions:dismiss_all");
 		};
 
-		const containerClick = (event: Event) => {
-			if (event.currentTarget === event.target) {
-				isOpen.value = false;
-			}
-		};
-
-		const togglePopup = () => {
-			isOpen.value = !isOpen.value;
+		const togglePopup = (newValue?: boolean) => {
+			isOpen.value = typeof newValue !== "undefined" ? newValue : !isOpen.value;
+			Array.from(document.querySelectorAll("[aria-controls='mentions-popup']")).forEach(
+				(el) => el.setAttribute("aria-expanded", isOpen.value ? "true" : "false")
+			);
 
 			if (isOpen.value) {
 				isLoading.value = true;
 				socket.emit("mentions:get");
+				previousFocus = document.activeElement as HTMLElement;
+				// Popup doesn't exist to be focused until next render
+				void nextTick().then(() => popup.value?.focus());
+			} else {
+				previousFocus?.focus();
+				previousFocus = null;
 			}
 		};
 
 		const closePopup = () => {
-			isOpen.value = false;
+			togglePopup(false);
+		};
+
+		const containerClick = (event: Event) => {
+			if (event.currentTarget === event.target) {
+				closePopup();
+			}
+		};
+
+		const popupFocusOut = (event: FocusEvent) => {
+			const focusedElement = event.relatedTarget as HTMLElement;
+
+			// relatedTarget may be unset e.g. when clicking container which isn't focusable
+			if (focusedElement && !focusedElement.closest(".mentions-popup")) {
+				closePopup();
+			}
 		};
 
 		onMounted(() => {
@@ -236,6 +265,9 @@ export default defineComponent({
 			dismissMention,
 			dismissAllMentions,
 			containerClick,
+			closePopup,
+			popupFocusOut,
+			popup,
 		};
 	},
 });
