@@ -55,7 +55,9 @@
 					/>
 					<button
 						class="mentions"
-						aria-label="Open your mentions"
+						aria-controls="mentions-popup"
+						aria-expanded="false"
+						aria-label="Mentions"
 						@click="openMentions"
 					/>
 					<button
