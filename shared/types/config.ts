@@ -3,6 +3,12 @@ export type ConfigTheme = {
 	name: string;
 	themeColor: string | null;
 };
+export type HideableNetworkFields =
+	| "proxyEnabled"
+	| "username"
+	| "realname"
+	| "leaveMessage"
+	| "public-auth";
 type SharedConfigurationBase = {
 	public: boolean;
 	useHexIp: boolean;
@@ -16,6 +22,7 @@ type SharedConfigurationBase = {
 	themes: ConfigTheme[];
 	defaultTheme: string;
 	fileUploadMaxFileSize?: number;
+	hiddenNetworkFields: HideableNetworkFields[];
 };
 
 export type ConfigNetDefaults = {

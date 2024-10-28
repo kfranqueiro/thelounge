@@ -285,6 +285,12 @@ module.exports = {
 	// This value is set to `false` by default.
 	lockNetwork: false,
 
+	// ### `hiddenNetworkFields`
+	//
+	// Array of optional fields to hide in NetworkForm.
+	// Valid values: proxyEnabled, username, realname, leaveMessage, public-auth
+	hiddenNetworkFields: [],
+
 	// ## User management
 
 	// ### `messageStorage`

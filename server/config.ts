@@ -6,6 +6,8 @@ import _ from "lodash";
 import colors from "chalk";
 import {SearchOptions} from "ldapjs";
 
+import {HideableNetworkFields} from "../shared/types/config";
+
 import log from "./log";
 import Helper from "./helper";
 import Utils from "./command-line/utils";
@@ -100,6 +102,7 @@ export type ConfigType = {
 	prefetchTimeout: number;
 	fileUpload: FileUpload;
 	transports: string[];
+	hiddenNetworkFields: HideableNetworkFields[];
 	leaveMessage: string;
 	defaults: Defaults;
 	lockNetwork: boolean;
