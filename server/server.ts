@@ -873,10 +873,12 @@ function getClientConfiguration(): SharedConfiguration | LockedSharedConfigurati
 		useHexIp: Config.values.useHexIp,
 		prefetch: Config.values.prefetch,
 		fileUploadMaxFileSize: Uploader ? Uploader.getMaxFileSize() : undefined, // TODO can't be undefined?
+		hiddenNetworkFields: Config.values.hiddenNetworkFields,
 	};
 
 	const defaultsOverride = {
-		nick: Config.getDefaultNick(), // expand the number part
+		// Expand %s in default nick, but only if non-empty
+		nick: Config.values.defaults.nick && Config.getDefaultNick(),
 
 		// TODO: this doesn't seem right, if the client needs this as a buffer
 		// the client ought to add it on its own
