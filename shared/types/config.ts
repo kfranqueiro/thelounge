@@ -3,29 +3,8 @@ export type ConfigTheme = {
 	name: string;
 	themeColor: string | null;
 };
-export type HideableNetworkFields =
-	| "proxyEnabled"
-	| "username"
-	| "realname"
-	| "leaveMessage"
-	| "public-auth";
-type SharedConfigurationBase = {
-	public: boolean;
-	useHexIp: boolean;
-	prefetch: boolean;
-	fileUpload: boolean;
-	ldapEnabled: boolean;
-	isUpdateAvailable: boolean;
-	applicationServerKey: string;
-	version: string;
-	gitCommit: string | null;
-	themes: ConfigTheme[];
-	defaultTheme: string;
-	fileUploadMaxFileSize?: number;
-	hiddenNetworkFields: HideableNetworkFields[];
-};
 
-export type ConfigNetDefaults = {
+export interface ConfigNetDefaults {
 	name: string;
 	host: string;
 	port: number;
@@ -40,11 +19,35 @@ export type ConfigNetDefaults = {
 	sasl: string;
 	saslAccount: string;
 	saslPassword: string;
-};
+}
 export type LockedConfigNetDefaults = Pick<
 	ConfigNetDefaults,
 	"name" | "nick" | "username" | "password" | "realname" | "join"
 >;
+export type Hints = Pick<ConfigNetDefaults, "password" | "nick" | "username" | "realname">;
+export type HideableNetworkFields =
+	| "proxyEnabled"
+	| "username"
+	| "realname"
+	| "leaveMessage"
+	| "public-auth";
+
+type SharedConfigurationBase = {
+	public: boolean;
+	useHexIp: boolean;
+	prefetch: boolean;
+	fileUpload: boolean;
+	ldapEnabled: boolean;
+	isUpdateAvailable: boolean;
+	applicationServerKey: string;
+	version: string;
+	gitCommit: string | null;
+	themes: ConfigTheme[];
+	defaultTheme: string;
+	fileUploadMaxFileSize?: number;
+	hiddenNetworkFields: HideableNetworkFields[];
+	hints: Hints;
+};
 
 export type LockedSharedConfiguration = SharedConfigurationBase & {
 	lockNetwork: true;
