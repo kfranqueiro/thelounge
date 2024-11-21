@@ -104,6 +104,7 @@ export type ConfigType = {
 	defaults: Defaults;
 	lockNetwork: boolean;
 	messageStorage: string[];
+	inactiveMessageLimit: number;
 	storagePolicy: StoragePolicy;
 	useHexIp: boolean;
 	webirc?: WebIRC;

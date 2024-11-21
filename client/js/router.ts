@@ -138,6 +138,7 @@ router.afterEach((to) => {
 
 	if (store.state.activeChannel) {
 		const channel = store.state.activeChannel.channel;
+		const inactiveMessageLimit = store.state.serverConfiguration?.inactiveMessageLimit || 100;
 
 		if (to.name !== "RoutedChat") {
 			store.commit("activeChannel", undefined);
@@ -148,8 +149,8 @@ router.afterEach((to) => {
 			channel.firstUnread = channel.messages[channel.messages.length - 1].id;
 		}
 
-		if (channel.messages?.length > 100) {
-			channel.messages.splice(0, channel.messages.length - 100);
+		if (channel.messages?.length > inactiveMessageLimit) {
+			channel.messages.splice(0, channel.messages.length - inactiveMessageLimit);
 			channel.moreHistoryAvailable = true;
 		}
 	}
