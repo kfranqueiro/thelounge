@@ -276,6 +276,23 @@ module.exports = {
 		leaveMessage: "",
 	},
 
+	// ### `hints`
+	//
+	// Specifies information to be displayed in extra-help button tooltips next to
+	// the respective fields. No extra-help button is displayed for blank entries.
+	// The available keys are a subset of the keys for `defaults`:
+	//
+	// - `password`
+	// - `nick`
+	// - `username`
+	// - `realname`
+	hints: {
+		password: "",
+		nick: "",
+		username: "",
+		realname: "",
+	},
+
 	// ### `lockNetwork`
 	//
 	// When set to `true`, users will not be able to modify host, port and TLS
