@@ -6,12 +6,11 @@ import _ from "lodash";
 import colors from "chalk";
 import {SearchOptions} from "ldapjs";
 
-import {HideableNetworkFields} from "../shared/types/config";
+import {ConfigNetDefaults, HideableNetworkFields, Hints} from "../shared/types/config";
 
 import log from "./log";
 import Helper from "./helper";
 import Utils from "./command-line/utils";
-import Network from "./models/network";
 
 // TODO: Type this
 export type WebIRC = {
@@ -29,25 +28,6 @@ type FileUpload = {
 	enable: boolean;
 	maxFileSize: number;
 	baseUrl?: string;
-};
-
-export type Defaults = Pick<
-	Network,
-	| "name"
-	| "host"
-	| "port"
-	| "password"
-	| "tls"
-	| "rejectUnauthorized"
-	| "nick"
-	| "username"
-	| "realname"
-	| "leaveMessage"
-	| "sasl"
-	| "saslAccount"
-	| "saslPassword"
-> & {
-	join: string;
 };
 
 type Identd = {
@@ -104,7 +84,8 @@ export type ConfigType = {
 	transports: string[];
 	hiddenNetworkFields: HideableNetworkFields[];
 	leaveMessage: string;
-	defaults: Defaults;
+	defaults: ConfigNetDefaults;
+	hints: Hints;
 	lockNetwork: boolean;
 	messageStorage: string[];
 	storagePolicy: StoragePolicy;

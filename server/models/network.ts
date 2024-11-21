@@ -11,6 +11,7 @@ import ClientCertificate, {ClientCertificateType} from "../plugins/clientCertifi
 import Client from "../client";
 import {MessageType} from "../../shared/types/msg";
 import {ChanType} from "../../shared/types/chan";
+import {ConfigNetDefaults} from "../../shared/types/config";
 import {SharedNetwork} from "../../shared/types/network";
 
 type NetworkIrcOptions = {
@@ -88,7 +89,7 @@ export type NetworkConfig = {
 	ignoreList: any[];
 };
 
-class Network {
+class Network implements Omit<ConfigNetDefaults, "join"> {
 	nick!: string;
 	name!: string;
 	host!: string;

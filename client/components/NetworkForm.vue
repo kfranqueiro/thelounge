@@ -68,9 +68,15 @@
 							:type="slotProps.isVisible ? 'text' : 'password'"
 							placeholder="Server password (optional)"
 							name="password"
+							:aria-describedby="
+								config?.hints.password ? 'connect:password-hint' : undefined
+							"
 							maxlength="300"
 						/>
 					</RevealPassword>
+				</div>
+				<div v-if="config?.hints.password" id="connect:password-hint" class="input-hint">
+					{{ config.hints.password }}
 				</div>
 				<div class="connect-row">
 					<label></label>
@@ -202,9 +208,15 @@
 							:type="slotProps.isVisible ? 'text' : 'password'"
 							placeholder="Server password (optional)"
 							name="password"
+							:aria-describedby="
+								config?.hints.password ? 'connect:password-hint' : undefined
+							"
 							maxlength="300"
 						/>
 					</RevealPassword>
+				</div>
+				<div v-if="config?.hints.password" id="connect:password-hint" class="input-hint">
+					{{ config.hints.password }}
 				</div>
 			</template>
 
@@ -216,36 +228,53 @@
 					v-model="defaults.nick"
 					class="input nick"
 					name="nick"
+					:aria-describedby="config?.hints.nick ? 'connect:nick-hint' : undefined"
 					pattern="[^\s:!@]+"
 					maxlength="100"
 					required
 					@input="onNickChanged"
 				/>
 			</div>
-			<div
-				v-if="!config?.useHexIp && !config?.hiddenNetworkFields.includes('username')"
-				class="connect-row"
-			>
-				<label for="connect:username">Username</label>
-				<input
-					id="connect:username"
-					ref="usernameInput"
-					v-model.trim="defaults.username"
-					class="input username"
-					name="username"
-					maxlength="100"
-				/>
+			<div v-if="config?.hints.nick" id="connect:nick-hint" class="input-hint">
+				{{ config.hints.nick }}
 			</div>
-			<div v-if="!config?.hiddenNetworkFields.includes('realname')" class="connect-row">
-				<label for="connect:realname">Real name</label>
-				<input
-					id="connect:realname"
-					v-model.trim="defaults.realname"
-					class="input"
-					name="realname"
-					maxlength="300"
-				/>
-			</div>
+			<template v-if="!config?.useHexIp && !config?.hiddenNetworkFields.includes('username')">
+				<div class="connect-row">
+					<label for="connect:username">Username</label>
+					<input
+						id="connect:username"
+						ref="usernameInput"
+						v-model.trim="defaults.username"
+						class="input username"
+						name="username"
+						:aria-describedby="
+							config?.hints.username ? 'connect:username-hint' : undefined
+						"
+						maxlength="100"
+					/>
+				</div>
+				<div v-if="config?.hints.username" id="connect:username-hint" class="input-hint">
+					{{ config.hints.username }}
+				</div>
+			</template>
+			<template v-if="!config?.hiddenNetworkFields.includes('realname')">
+				<div class="connect-row">
+					<label for="connect:realname">Real name</label>
+					<input
+						id="connect:realname"
+						v-model.trim="defaults.realname"
+						class="input"
+						name="realname"
+						:aria-describedby="
+							config?.hints.realname ? 'connect:realname-hint' : undefined
+						"
+						maxlength="300"
+					/>
+				</div>
+				<div v-if="config?.hints.realname" id="connect:realname-hint" class="input-hint">
+					{{ config.hints.realname }}
+				</div>
+			</template>
 			<div v-if="!config?.hiddenNetworkFields.includes('leaveMessage')" class="connect-row">
 				<label for="connect:leaveMessage">Leave message</label>
 				<input
@@ -306,24 +335,38 @@ the server tab on new connection"
 								</label>
 							</div>
 						</div>
-						<div v-if="displayPasswordField" class="connect-row">
-							<label for="connect:password">Password</label>
-							<RevealPassword
-								v-slot:default="slotProps"
-								class="input-wrap password-container"
+						<template v-if="displayPasswordField">
+							<div class="connect-row">
+								<label for="connect:password">Password</label>
+								<RevealPassword
+									v-slot:default="slotProps"
+									class="input-wrap password-container"
+								>
+									<input
+										id="connect:password"
+										ref="publicPassword"
+										v-model="defaults.password"
+										class="input"
+										:type="slotProps.isVisible ? 'text' : 'password'"
+										placeholder="Server password (optional)"
+										name="password"
+										:aria-describedby="
+											config?.hints.password
+												? 'connect:password-hint'
+												: undefined
+										"
+										maxlength="300"
+									/>
+								</RevealPassword>
+							</div>
+							<div
+								v-if="config?.hints.password"
+								id="connect:password-hint"
+								class="input-hint"
 							>
-								<input
-									id="connect:password"
-									ref="publicPassword"
-									v-model="defaults.password"
-									class="input"
-									:type="slotProps.isVisible ? 'text' : 'password'"
-									placeholder="Server password (optional)"
-									name="password"
-									maxlength="300"
-								/>
-							</RevealPassword>
-						</div>
+								{{ config.hints.password }}
+							</div>
+						</template>
 					</template>
 				</template>
 				<template v-else>
