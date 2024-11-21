@@ -47,6 +47,7 @@ type SharedConfigurationBase = {
 	fileUploadMaxFileSize?: number;
 	hiddenNetworkFields: HideableNetworkFields[];
 	hints: Hints;
+	inactiveMessageLimit: number;
 };
 
 export type LockedSharedConfiguration = SharedConfigurationBase & {

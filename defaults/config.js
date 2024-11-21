@@ -327,6 +327,13 @@ module.exports = {
 	// This value is set to `["sqlite", "text"]` by default.
 	messageStorage: ["sqlite", "text"],
 
+	// ### `inactiveMessageLimit`
+	//
+	// Setting that impacts how many messages to retain client-side in each
+	// inactive channel. Messages are pruned when switching away from a channel
+	// and when an inactive channel receives a message.
+	inactiveMessageLimit: 100,
+
 	// ### `storagePolicy`
 
 	// When the sqlite storage is in use, control the maximum storage duration.

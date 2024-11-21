@@ -875,6 +875,7 @@ function getClientConfiguration(): SharedConfiguration | LockedSharedConfigurati
 		fileUploadMaxFileSize: Uploader ? Uploader.getMaxFileSize() : undefined, // TODO can't be undefined?
 		hiddenNetworkFields: Config.values.hiddenNetworkFields,
 		hints: Config.values.hints,
+		inactiveMessageLimit: Config.values.inactiveMessageLimit,
 	};
 
 	const defaultsOverride = {
