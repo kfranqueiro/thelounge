@@ -1028,6 +1028,8 @@ function performAuthentication(this: Socket, data: AuthPerformData) {
 			}
 
 			socket.emit("auth:failed");
+			// TODO: conditionalize based on config
+			socket.disconnect(true);
 			return;
 		}
 

@@ -49,7 +49,15 @@ self.addEventListener("fetch", function (event) {
 
 async function putInCache(request, response) {
 	const cache = await caches.open(cacheName);
+	console.log("putting in cache:", cacheName);
 	await cache.put(request, response);
+}
+
+async function purgeCache() {
+	const keys = await caches.keys();
+	console.log("keys:", keys);
+	const result = await caches.delete(cacheName);
+	console.log("purging cache", cacheName, result);
 }
 
 async function cleanRedirect(response) {
@@ -110,6 +118,12 @@ async function networkOrCache(event) {
 }
 
 self.addEventListener("message", function (event) {
+	// Allow purging cache on auth failures
+	if (event.data.type === "purge") {
+		event.waitUntil(purgeCache());
+		return;
+	}
+
 	showNotification(event, event.data);
 });
 

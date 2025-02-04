@@ -81,9 +81,17 @@ export default defineComponent({
 		const username = ref(storage.get("user") || "");
 		const password = ref("");
 
-		const onAuthFailed = () => {
+		const onAuthFailed = async () => {
 			if (refreshOnAuthFailure) {
 				storage.set(authErrorKey, "true");
+				socket.disconnect();
+
+				if ("serviceWorker" in navigator) {
+					await navigator.serviceWorker.ready.then((registration) => {
+						registration.active?.postMessage({type: "purge"});
+					});
+				}
+
 				location.reload();
 			} else {
 				inFlight.value = false;
