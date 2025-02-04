@@ -59,6 +59,10 @@ import socket from "../../js/socket";
 import RevealPassword from "../RevealPassword.vue";
 import {defineComponent, onBeforeUnmount, onMounted, ref} from "vue";
 
+const authErrorKey = "thelounge.signin.errorShown";
+// TODO: make configurable (serverConfiguration isn't available until after auth)
+const refreshOnAuthFailure = true;
+
 export default defineComponent({
 	name: "SignIn",
 	components: {
@@ -66,14 +70,25 @@ export default defineComponent({
 	},
 	setup() {
 		const inFlight = ref(false);
-		const errorShown = ref(false);
+		const errorShown = ref(refreshOnAuthFailure ? Boolean(storage.get(authErrorKey)) : false);
+
+		if (refreshOnAuthFailure) {
+			// Remove immediately after initially showing,
+			// to avoid persisting across user-initiated reloads
+			storage.remove(authErrorKey);
+		}
 
 		const username = ref(storage.get("user") || "");
 		const password = ref("");
 
 		const onAuthFailed = () => {
-			inFlight.value = false;
-			errorShown.value = true;
+			if (refreshOnAuthFailure) {
+				storage.set(authErrorKey, "true");
+				location.reload();
+			} else {
+				inFlight.value = false;
+				errorShown.value = true;
+			}
 		};
 
 		const onSubmit = (event: Event) => {
