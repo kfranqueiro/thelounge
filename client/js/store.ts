@@ -12,6 +12,8 @@ import {SharedConfiguration, LockedSharedConfiguration} from "../../shared/types
 
 const appName = document.title;
 
+type AuthFailureState = "disconnected" | "failed" | null;
+
 enum DesktopNotificationState {
 	Unsupported = "unsupported",
 	Blocked = "blocked",
@@ -43,6 +45,7 @@ export type ClientSession = {
 export type State = {
 	appLoaded: boolean;
 	activeChannel?: NetChan;
+	authFailure: AuthFailureState;
 	currentUserVisibleError: string | null;
 	desktopNotificationState: DesktopNotificationState;
 	isAutoCompleting: boolean;
@@ -87,6 +90,7 @@ export type State = {
 const state = (): State => ({
 	appLoaded: false,
 	activeChannel: undefined,
+	authFailure: storage.get("thelounge.state.authFailure") as AuthFailureState,
 	currentUserVisibleError: null,
 	desktopNotificationState: detectDesktopNotificationState(),
 	isAutoCompleting: false,
@@ -201,6 +205,7 @@ const getters: Getters = {
 type Mutations = {
 	appLoaded(state: State): void;
 	activeChannel(state: State, netChan: State["activeChannel"]): void;
+	authFailure(state: State, value: AuthFailureState): void;
 	currentUserVisibleError(state: State, error: State["currentUserVisibleError"]): void;
 	refreshDesktopNotificationState(state: State): void;
 	isAutoCompleting(state: State, isAutoCompleting: State["isAutoCompleting"]): void;
@@ -241,6 +246,15 @@ const mutations: Mutations = {
 	},
 	activeChannel(state, netChan) {
 		state.activeChannel = netChan;
+	},
+	authFailure(state, value) {
+		state.authFailure = value;
+
+		if (value) {
+			storage.set("thelounge.state.authFailure", value);
+		} else {
+			storage.remove("thelounge.state.authFailure");
+		}
 	},
 	currentUserVisibleError(state, error) {
 		state.currentUserVisibleError = error;
