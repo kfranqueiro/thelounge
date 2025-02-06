@@ -12,11 +12,18 @@ declare global {
 }
 
 socket.on("auth:success", function () {
+	if (store.state.authFailure && !document.body.classList.contains("public")) {
+		// Re-enable auto-reconnection on private instances after previous auth failure
+		store.commit("authFailure", null);
+		socket.io.reconnection(true);
+	}
+
 	store.commit("currentUserVisibleError", "Loading messages…");
 	updateLoadingMessage();
 });
 
 socket.on("auth:failed", async function () {
+	store.commit("authFailure", "failed");
 	storage.remove("token");
 
 	if (store.state.appLoaded) {

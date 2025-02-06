@@ -1,9 +1,14 @@
 import {store} from "../store";
 import socket from "../socket";
 
-socket.on("disconnect", handleDisconnect);
-socket.on("connect_error", handleDisconnect);
-socket.on("error", handleDisconnect);
+const disconnectionTypes = ["disconnect", "connect_error", "error"] as const;
+type DisconnectionType = typeof disconnectionTypes[number];
+
+for (const type of disconnectionTypes) {
+	socket.on(type, (data) => {
+		handleDisconnect(type, data);
+	});
+}
 
 socket.io.on("reconnect_attempt", function (attempt) {
 	store.commit("currentUserVisibleError", `Reconnecting… (attempt ${attempt})`);
@@ -21,14 +26,39 @@ socket.on("connect", function () {
 	// nothing is sent to the server that might have happened.
 	socket.sendBuffer = [];
 
+	// If previously disconnected due to auth failure
+	// and subsequently able to reconnect, reset state
+	if (store.state.authFailure === "disconnected") {
+		store.commit("authFailure", null);
+	}
+
 	store.commit("currentUserVisibleError", "Finalizing connection…");
 	updateLoadingMessage();
 });
 
-function handleDisconnect(data) {
+function handleDisconnect(type: DisconnectionType, data) {
 	const message = String(data.message || data);
 
 	store.commit("isConnected", false);
+
+	// Prevent auto-reconnecting if disconnected after auth failures (e.g. fail2ban)
+	if (store.state.authFailure === "failed") {
+		if ((type === "disconnect" && message === "transport error") || type === "connect_error") {
+			store.commit("authFailure", "disconnected");
+		}
+	}
+
+	// Note: This is intentionally not an else if;
+	// this can apply directly after the preceding "failed" case
+	if (store.state.authFailure === "disconnected") {
+		store.commit(
+			"currentUserVisibleError",
+			"Disconnected from the server. Please try again later."
+		);
+		updateLoadingMessage();
+		socket.io.reconnection(false);
+		return;
+	}
 
 	if (!socket.io.reconnection()) {
 		store.commit(
