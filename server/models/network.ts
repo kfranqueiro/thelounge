@@ -1,5 +1,5 @@
 import _ from "lodash";
-import {v4 as uuidv4} from "uuid";
+import crypto from "crypto";
 import IrcFramework, {Client as IRCClient} from "irc-framework";
 import Chan, {ChanConfig, Channel} from "./chan";
 import Msg from "./msg";
@@ -177,7 +177,7 @@ class Network implements Omit<ConfigNetDefaults, "join"> {
 		});
 
 		if (!this.uuid) {
-			this.uuid = uuidv4();
+			this.uuid = crypto.randomUUID();
 		}
 
 		if (!this.name) {
